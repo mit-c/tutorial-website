@@ -2,6 +2,7 @@ import { JSXElement } from "@babel/types";
 import React from "react"
 import styled from "styled-components"
 import colours from "../colours";
+import sidebar, { sidebarGridName } from "./sidebar";
 
 const footerGridName = 'footer';
 

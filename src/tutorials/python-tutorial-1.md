@@ -2,5 +2,8 @@
 
 This is some python code probably 
 ```python 
-print('hello world')
+def whatDoIDo(n):
+    if n == 0 or n == 1:
+        return n
+    return whatDoIDo(n-1) + whatDoIDo(n-2)
 ```
