@@ -18,4 +18,5 @@ export default styled(Footer)`
     grid-area: footer;
     background-color: ${colours.black};
     color: white;
+    border-radius: 4px 0 0 0;
 `
