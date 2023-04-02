@@ -14,7 +14,14 @@ interface SidebarProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const FlexColumn = styled.div`
+const Ul = styled.div`
+  margin-block-start: 0;
+  padding-inline-start: 0;
+`
+
+const FlexColumn = styled.ul`
+    margin-block-start: 0;
+    padding-inline-start: 0;
     display: flex;
     flex-direction: column;
 `;
@@ -23,11 +30,21 @@ const FlexRow = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    border: 2px solid black;
+    border-radius: 8px;
+    background-color: ${colours.black};
+    margin: 4px;
 `;
 
 const MarginContainer = styled.div`
-    margin: 8px 8px 8px 8px;
+    margin: 8px;
 `;
+
+const IconContainer = styled.div`
+  display: flex;  
+  justify-content: center;
+  margin: 8px;
+`
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -49,9 +66,8 @@ const rotateAnimation = (isOpen: boolean) => keyframes`
 `;
 
 const shakeAnimation = (isOpen: boolean) => keyframes`
-  0% { transform: transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0)'}
-   translateY(20%);}
-  50% { transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0)'} translateY(20%);}
+  0% { transform: ${isOpen ? 'rotate(180deg) translateY(-20%)' : 'rotate(0) translateY(20%)'};}
+  50% { transform: ${isOpen ? 'rotate(180deg) translateY(20%);' : 'rotate(0) translateY(-20%)'}}
   100% { transform: translateY(0) ${isOpen ? 'rotate(180deg);' : 'rotate(0);' }
 `;
 
@@ -71,15 +87,15 @@ interface FontAwesomeIconWithAnimationAndPaddingProps extends FontAwesomeIconPro
 }
 
 const FontAwesomeIconWithPadding = (props: FontAwesomeIconWithAnimationAndPaddingProps) => {
-    return <MarginContainer>
+    return <IconContainer>
         <FontAwesomeIcon {...props}/>
-    </MarginContainer>
+    </IconContainer>
 }
 
 const FontAwesomeIconWithPaddingAndTransition = (props: FontAwesomeIconWithAnimationAndPaddingProps) => {
-    return <MarginContainer>
+    return <IconContainer>
         <FontAwesomeSingleIterationIcon {...props}/>
-    </MarginContainer>
+    </IconContainer>
 }
 
 const Sidebar = ({ className, isOpen, setIsOpen }: SidebarProps) => {
@@ -87,7 +103,12 @@ const Sidebar = ({ className, isOpen, setIsOpen }: SidebarProps) => {
     <FlexRow>
             {isOpen && <MarginContainer><FadeInText>Tutorials</FadeInText></MarginContainer>}
                     <MarginContainer>   
-                    <FontAwesomeIconWithPaddingAndTransition isOpen={isOpen} icon={faAnglesRight} onClick={() => setIsOpen((prev) => !prev)} size='lg'/>
+                    <FontAwesomeIconWithPaddingAndTransition 
+                      isOpen={isOpen} 
+                      icon={faAnglesRight} 
+                      onClick={() => setIsOpen((prev) => !prev)} 
+                      size='lg'
+                    />
                     </MarginContainer>
     </FlexRow>
     {renderSidebarItems(isOpen)}
@@ -96,19 +117,20 @@ const Sidebar = ({ className, isOpen, setIsOpen }: SidebarProps) => {
 
 const renderSidebarItems = (isOpen: boolean) => {
     const iconByDescription: Record<string, any> = {
-        'I am a ambulance': faPython,
+        'Python': faPython,
         'Anchor':faAnchor,
         'T-shirt':faTShirt,
-        'I want to have nicer smelling air, this is long text':faAirFreshener,
+        'long text 123':faAirFreshener,
     };
 
     return Object.keys(iconByDescription).map((description) => (
-            <FlexRow>
+            <FlexRow as='li'>
                     {isOpen && <MarginContainer><FadeInText>{description}</FadeInText></MarginContainer>}
                     <MarginContainer>   
-                    <FontAwesomeIconWithPadding isOpen={isOpen} icon={iconByDescription[description]} size='lg'/>
+                      <FontAwesomeIconWithPadding isOpen={isOpen} icon={iconByDescription[description]} size='lg'/>
                     </MarginContainer>
             </FlexRow>
+            
         ));
 }
 

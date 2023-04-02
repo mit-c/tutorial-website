@@ -17,9 +17,9 @@ const WebsiteContainer = styled.div<WebsiteContainerProps>`
   "${sidebarGridName} ${bodyGridName} ${bodyGridName}"
   "${sidebarGridName} ${footerGridName} ${footerGridName}";
   grid-gap: 8px;
-  grid-template-columns: ${({isSideBarOpen}) => isSideBarOpen ? '15rem auto;' : '53px auto'};
+  grid-template-columns: ${({isSideBarOpen}) => isSideBarOpen ? '15rem auto;' : '67px auto'};
   grid-template-rows: 4rem 1fr 4rem;
-  transition: 2s;
+  transition: 300ms;
   @supports (height: 100dvh) {
     height: 100dvh;
   }
