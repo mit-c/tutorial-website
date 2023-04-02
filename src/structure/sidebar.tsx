@@ -1,7 +1,7 @@
 import React, { Fragment } from "react"
 import styled, { css, keyframes } from "styled-components"
 import colours from "../colours";
-import { faAirFreshener, faAmbulance, faAnchor, faAnglesLeft, faAnglesRight, faTShirt, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faAirFreshener, faAnchor, faAnglesLeft, faAnglesRight, faTShirt, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { isObjectExpression } from "@babel/types";
 import { icon, IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -34,6 +34,7 @@ const FlexRow = styled.div`
     border-radius: 8px;
     background-color: ${colours.black};
     margin: 4px;
+    
 `;
 
 const MarginContainer = styled.div`
@@ -104,6 +105,7 @@ const Sidebar = ({ className, isOpen, setIsOpen }: SidebarProps) => {
                       icon={faAnglesRight} 
                       onClick={() => setIsOpen((prev) => !prev)} 
                       size='lg'
+                      fixedWidth
                     />
                     </MarginContainer>
     </FlexRow>
@@ -123,7 +125,12 @@ const renderSidebarItems = (isOpen: boolean) => {
             <FlexRow as='li'>
                     {isOpen && <MarginContainer><FadeInText>{description}</FadeInText></MarginContainer>}
                     <MarginContainer>   
-                      <FontAwesomeIconWithPadding isOpen={isOpen} icon={iconByDescription[description]} size='lg'/>
+                      <FontAwesomeIconWithPadding 
+                      isOpen={isOpen} 
+                      icon={iconByDescription[description]} 
+                      size='lg'
+                      fixedWidth
+                      />
                     </MarginContainer>
             </FlexRow>
             
