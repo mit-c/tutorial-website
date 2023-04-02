@@ -14,14 +14,11 @@ interface SidebarProps {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Ul = styled.div`
-  margin-block-start: 0;
-  padding-inline-start: 0;
-`
-
 const FlexColumn = styled.ul`
     margin-block-start: 0;
     padding-inline-start: 0;
+    margin-block-end: 0;
+    padding-inline-end: 0;
     display: flex;
     flex-direction: column;
 `;
