@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import styled from "styled-components"
 import colours from "../colours";
-
+import ReactMarkdown from 'react-markdown';
+import pythonTutorial1 from '../tutorials/python-tutorial-1.md'
 const bodyGridName = "body";
 
 interface BodyProps {
@@ -9,7 +10,16 @@ interface BodyProps {
 }
 
 const Body = ({ className }: BodyProps) => {
-  return <div className={className}>TODO react router should change content in the body
+  const [pythonTutorialText, setPythonTutorialText] = useState('');
+  useEffect(() => {
+    fetch(pythonTutorial1).then((res) => res.text())
+      .then((text) => setPythonTutorialText(text))
+  }, [])
+  return <div className={className}>
+      <ReactMarkdown>
+        {pythonTutorialText}
+      </ReactMarkdown>
+
   </div>;
 };
 
