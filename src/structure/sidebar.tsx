@@ -1,11 +1,14 @@
 import React, { Fragment } from "react"
 import styled, { css, keyframes } from "styled-components"
 import colours from "../colours";
-import { faAirFreshener, faAnchor, faAnglesLeft, faAnglesRight, faTShirt, IconDefinition } from '@fortawesome/free-solid-svg-icons'
+import { faAirFreshener, faAnchor, faAnglesLeft, faAnglesRight, faPaintBrush, faTShirt, IconDefinition } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
 import { isObjectExpression } from "@babel/types";
 import { icon, IconProp } from "@fortawesome/fontawesome-svg-core";
 import {faPython } from '@fortawesome/free-brands-svg-icons'
+import { UUID } from "crypto";
+import { Link, NavigateFunction, useNavigate } from "react-router-dom";
+import pagesData from "../data/pages-data";
 const sidebarGridName = "sidebar";
 
 interface SidebarProps {
@@ -33,7 +36,7 @@ const FlexRow = styled.div`
     margin: 4px;
     
 `;
-
+// todo refactor this code to use the flex component
 const MarginContainer = styled.div`
     margin: 8px;
 `;
@@ -58,44 +61,53 @@ const FadeInText = styled.div`
   white-space: nowrap;
 `;
 
-const shakeAnimation = (isOpen: boolean) => keyframes`
-  0% { transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0)'};}
-  25% { transform: ${isOpen ? 'rotate(200deg)' : 'rotate(-20deg)'};}
-  50% { transform: ${isOpen ? 'rotate(160deg)' : 'rotate(20deg)'}}
-  100% { transform: ${isOpen ? 'rotate(180deg);' : 'rotate(0);'}
+const shakeAnimationWithRotation = (shouldRotate: boolean) => keyframes`
+  0% { transform: ${shouldRotate ? 'rotate(180deg)' : 'rotate(0)'};}
+  25% { transform: ${shouldRotate ? 'rotate(200deg)' : 'rotate(-20deg)'};}
+  50% { transform: ${shouldRotate ? 'rotate(160deg)' : 'rotate(20deg)'}}
+  100% { transform: ${shouldRotate ? 'rotate(180deg);' : 'rotate(0);'}
 `;
 
-
-const FontAwesomeSingleIterationIcon = styled(
+const ChevronRotateAndShake = styled(
     FontAwesomeIcon
   )<FontAwesomeIconWithAnimationAndPaddingProps>`
     transform: ${({isOpen}) => isOpen ? 'rotate(180deg)' : 'rotate(0)' };
     &:hover {
       animation: ${({ isOpen }) =>
-      css`${shakeAnimation(isOpen)} 0.3s ease-in-out forwards`};
+      css`${shakeAnimationWithRotation(isOpen)} 0.3s ease-in-out forwards`};
     }
       `;
-  
+
+// todo move this code to separate styling place and clean it up
+
+const ShakeIcon = styled(FontAwesomeIcon)<any>`
+  &:hover {
+    animation: ${() =>
+    css`${shakeAnimationWithRotation(false)} 0.3s ease-in-out forwards`};
+  }
+`
+
 interface FontAwesomeIconWithAnimationAndPaddingProps extends FontAwesomeIconProps {
     isOpen: boolean;
 }
 
-const FontAwesomeIconWithPadding = (props: FontAwesomeIconWithAnimationAndPaddingProps) => {
+const FontAwesomeIconWithPaddingAndShake = (props: FontAwesomeIconWithAnimationAndPaddingProps) => {
     return <IconContainer>
-        <FontAwesomeIcon {...props}/>
+        <ShakeIcon {...props}/>
     </IconContainer>
 }
 
 const FontAwesomeIconWithPaddingAndTransition = (props: FontAwesomeIconWithAnimationAndPaddingProps) => {
     return <IconContainer>
-        <FontAwesomeSingleIterationIcon {...props}/>
+        <ChevronRotateAndShake {...props}/>
     </IconContainer>
 }
 
 const Sidebar = ({ className, isOpen, setIsOpen }: SidebarProps) => {
+   let navigate = useNavigate();
    return <FlexColumn className={className}>
     <FlexRow>
-            {isOpen && <MarginContainer><FadeInText>Tutorials</FadeInText></MarginContainer>}
+            {isOpen && <MarginContainer><FadeInText>Menu</FadeInText></MarginContainer>}
                     <MarginContainer>   
                     <FontAwesomeIconWithPaddingAndTransition 
                       isOpen={isOpen} 
@@ -106,28 +118,29 @@ const Sidebar = ({ className, isOpen, setIsOpen }: SidebarProps) => {
                     />
                     </MarginContainer>
     </FlexRow>
-    {renderSidebarItems(isOpen)}
+    {renderSidebarItems(isOpen, navigate)}
   </FlexColumn>;
 };
 
-const renderSidebarItems = (isOpen: boolean) => {
-    const iconByDescription: Record<string, any> = {
-        'Python': faPython,
-        'Anchor':faAnchor,
-        'T-shirt':faTShirt,
-        'long text 123':faAirFreshener,
-    };
 
-    return Object.keys(iconByDescription).map((description) => (
-            <FlexRow as='li'>
-                    {isOpen && <MarginContainer><FadeInText>{description}</FadeInText></MarginContainer>}
+
+const renderSidebarItems = (isOpen: boolean, navigate: NavigateFunction) => {
+    // todo store data seperate file
+    // Consider storing this on db 
+    return pagesData.map((pageData) => (
+            <FlexRow 
+            as='li'
+            onClick={() => navigate('/' + pageData.link)}
+            >
+                    {isOpen && <MarginContainer><FadeInText>{pageData.title}</FadeInText></MarginContainer>}
                     <MarginContainer>   
-                      <FontAwesomeIconWithPadding 
-                      isOpen={isOpen} 
-                      icon={iconByDescription[description]} 
-                      size='lg'
-                      fixedWidth
-                      />
+                        <FontAwesomeIconWithPaddingAndShake 
+                          isOpen={isOpen} 
+                          icon={pageData.icon} 
+                          size='lg'
+                          fixedWidth
+                          
+                        />
                     </MarginContainer>
             </FlexRow>
             
