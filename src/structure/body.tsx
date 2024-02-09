@@ -4,7 +4,6 @@ import colours from "../colours";
 import { Route, Routes } from "react-router-dom";
 import PythonTutorialOne from "../pages/tutorial-python-1";
 import Home from "../pages/home";
-import Pictionary from "../games/pictionary/pictionary";
 import pagesData from "../data/pages-data";
 const bodyGridName = "body";
 

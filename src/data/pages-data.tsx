@@ -1,7 +1,7 @@
 import { faPython } from "@fortawesome/free-brands-svg-icons";
 import { IconDefinition, faPaintBrush } from "@fortawesome/free-solid-svg-icons";
 import PythonTutorialOne from "../pages/tutorial-python-1";
-import Pictionary from "../games/pictionary/pictionary";
+import PictionaryContainer from "../games/pictionary/pictionary-container";
 interface PageData {
     title: string;
     icon: IconDefinition;
@@ -21,7 +21,7 @@ const pagesData: Array<PageData> = [
       title: 'Pictionary',
       icon: faPaintBrush,
       link: 'pictionary',
-      component: <Pictionary />
+      component: <PictionaryContainer />
     }
 ];
 
